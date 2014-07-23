@@ -1,0 +1,9 @@
+# WikipeDPLA Chrome Extension
+
+A Chrome Extension version of the [FindDPLA](https://en.wikipedia.org/wiki/Wikipedia:TWL/FindDPLA) user script.
+
+## To Do
+
+- Use fallbacks in wp object, not just title
+- Basic options page
+    + add `"options_page": "options.html"` & `"permissions": ["storage"]` to manifest.json
