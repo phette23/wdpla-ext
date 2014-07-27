@@ -10,6 +10,8 @@
 'use strict';
 
 // construct a query URI
+// @todo query global var is a bad idea, rethink this
+// e.g. consider multiple tabs searching DPLA at once, crossed streams
 var query = '',
 buildURI = function (query) {
     var base = 'http://api.dp.la/v2/items',
@@ -52,6 +54,7 @@ buildSuggestions = function (dpla) {
         current = {},
         suggestions = [];
 
+    // @todo should use Array.map here instead
     $.each(items, function (index, item){
         var res = item.sourceResource;
 

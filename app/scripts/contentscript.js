@@ -113,6 +113,7 @@ init = function() {
         wp.getCategories();
 
         // add the #loaddpla link
+        // @todo i18n, don't pass English strings here, use chrome.i18n.getMessage()
         $('#mw-content-text').prepend('<div class="hatnote"><a id="loaddpla">Search the <abbr title="Digital Public Library of America">DPLA</abbr>…</a></div>').find('#loaddpla').show('slow');
         $('#loaddpla').on('click', displaySuggestions);
 
