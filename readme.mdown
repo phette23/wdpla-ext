@@ -1,9 +1,16 @@
 # WikipeDPLA Chrome Extension
 
-A Chrome Extension version of the [FindDPLA](https://en.wikipedia.org/wiki/Wikipedia:TWL/FindDPLA) user script.
+A Chrome Extension version of the [FindDPLA](https://en.wikipedia.org/wiki/Wikipedia:TWL/FindDPLA) user script. Available [in the Chrome Web Store](https://chrome.google.com/webstore/detail/wikipedpla/jeblaajgenlcpcfhmgdhdeehjfbfhmml).
+
+## Grunt Tasks
+
+There are a set of Grunt tasks available for development. To get started, ensure you have Node.js installed and Grunt installed globally (`npm i -g grunt-cli`), then run `npm i` inside the project. The default `grunt` task runs JSHint on the scripts and then builds the extension while bumping the patch version number.
 
 ## To Do
 
-- Use fallbacks in wp object, not just title
+See: `@todo` notices in the code (I run `ack --ignore-case --after-context=2 '@todo'` to list them all) & issues queue.
+
+- Internationalization
 - Basic options page
     + add `"options_page": "options.html"` & `"permissions": ["storage"]` to manifest.json
+- (far-future) Make a framework for doing something similar with other digital library APIs, e.g. [Europeana](http://labs.europeana.eu/api/)
