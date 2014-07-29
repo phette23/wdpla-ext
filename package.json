@@ -1,6 +1,7 @@
 {
   "name": "WikipeDPLA",
   "version": "0.0.1",
+  "VERSION NOTE": "This version is irrelevant, only the one in app/manifest.json matters.",
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.1",
@@ -22,6 +23,7 @@
     "grunt-chrome-manifest": "~0.1.0",
     "time-grunt": "~0.1.1"
   },
+  "private": true,
   "engines": {
     "node": ">=0.10.0"
   }
