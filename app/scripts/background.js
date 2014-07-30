@@ -4,7 +4,7 @@
  * listen for messages from contentscript.js
  * messages contain wp object with info about article
  * construct DPLA API queries using that info
- * when we have some API results, sendResponse back to contentscript.js
+ * when we have results, send subset of DPLA metadata to contentscript.js
  */
 
 'use strict';
@@ -49,28 +49,24 @@ isItAnImage = function (types) {
         return false;
     }
 },
-buildSuggestions = function (dpla) {
-    var items = dpla.docs,
-        current = {},
-        suggestions = [];
+// map DPLA metadata into simpler subset
+dplaMap = function (item) {
+    var newItem = {}
+        , res = item.sourceResource;
 
-    // @todo should use Array.map here instead
-    $.each(items, function (index, item){
-        var res = item.sourceResource;
+    newItem.title = Array.isArray(res.title) ? res.title[0] : res.title;
+    newItem.title = trunc(newItem.title);
+    newItem.uri = item.isShownAt;
+    newItem.isImage = isItAnImage(res.type);
 
-        current.title = $.isArray(res.title) ? res.title[0] : res.title;
-        current.title = trunc(current.title);
-        current.uri = item.isShownAt;
-        current.isImage = isItAnImage(res.type);
-
-        suggestions.push(current);
-        current = {};
-    });
-
-    return suggestions;
+    return newItem;
+},
+// perform the map above
+subsetDpla = function (dpla) {
+    return dpla.docs.map(dplaMap);
 },
 // send XHR to DPLA, pass results to callback
-getDPLAresults = function (wp, cb) {
+getDplaResults = function (wp, cb) {
     var url = buildURI(query);
 
     $.ajax({
@@ -78,10 +74,10 @@ getDPLAresults = function (wp, cb) {
         dataType: 'json'
     })
     .done(function(data) {
-        var suggestions = buildSuggestions(data);
+        var results = subsetDpla(data);
 
         // if we didn't get anything, try a fallback
-        if (suggestions.length === 0) {
+        if (results.length === 0) {
             // first look in redirects
             if (wp.redirects.length !== 0) {
                 query = wp.redirects.pop();
@@ -94,11 +90,11 @@ getDPLAresults = function (wp, cb) {
             }
 
             // will use the new query
-            getDPLAresults(wp, cb);
+            getDplaResults(wp, cb);
             return;
         }
 
-        cb(suggestions);
+        cb(results);
     })
     .fail(function(data, status, xhr) {
         console.log('XHR error. Status:', status, 'XHR:', xhr);
@@ -114,7 +110,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 
     console.log('Message from a content script at', sender.tab.url);
 
-    getDPLAresults(wp, function (suggestions) {
+    getDplaResults(wp, function (suggestions) {
         // a callback 3rd param to addListener never seems to work
         // but using this manual callback method does
         chrome.tabs.sendMessage(id, suggestions);
