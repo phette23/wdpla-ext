@@ -36,7 +36,7 @@ trunc = function (str, int) {
 // given DPLA doc, see if its type array contains 'image'
 isItAnImage = function (types) {
     // types can be array or string
-    if ($.isArray(types)) {
+    if (Array.isArray(types)) {
         for (var type in types) {
             if (type.toLowerCase() === 'image') {
                 return true;
@@ -69,6 +69,7 @@ subsetDpla = function (dpla) {
 getDplaResults = function (wp, cb) {
     var url = buildURI(query);
 
+    // currently the only place where jQuery dependency is used
     $.ajax({
         url: url,
         dataType: 'json'
