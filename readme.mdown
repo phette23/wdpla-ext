@@ -10,7 +10,7 @@ There are a set of Grunt tasks available for development. To get started, ensure
 
 See: `@todo` notices in the code (I run `ack --ignore-case --after-context=2 '@todo'` to list them all) & issues queue.
 
-- Internationalization
+- Internationalization: while most text inserted by the extension are in "_locales" messages, some conditions in contentscript.js assume an English-language article
 - Basic options page
     + add `"options_page": "options.html"` & `"permissions": ["storage"]` to manifest.json
 - (far-future) Make a framework for doing something similar with other digital library APIs, e.g. [Europeana](http://labs.europeana.eu/api/)

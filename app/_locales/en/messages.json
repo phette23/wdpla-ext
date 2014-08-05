@@ -7,6 +7,20 @@
         "message": "See relevant content from the Digital Public Library of America in Wikipedia",
         "description": "manifest: the description of the application"
     },
+    "apiName": {
+        "message": "DPLA",
+        "description": "name of digital library API used"
+    },
+    "searchTheApi": {
+        "message": "Search the DPLA",
+        "description": "call to search the digital library API"
+    },
+    "item": {
+        "message": "item"
+    },
+    "items": {
+        "message": "items"
+    },
     "optsTitle": {
         "message": "WikipeDPLA Options",
         "description": "options: page <h1> & title"

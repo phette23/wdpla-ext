@@ -52,7 +52,8 @@ addToDOM = function (html) {
 // add HTML to page based on info in suggestions array
 displaySuggestions = function () {
     // @todo is there a better way to construct this HTML?
-    var html = '<div id="wikipedpla" class="hatnote"><a href="http://dp.la">DPLA</a> ',
+    var html = '<div id="wikipedpla" class="hatnote"><a href="http://dp.la">' +
+        chrome.i18n.getMessage('apiName') + '</a> ',
         len = suggestions.length;
 
     // if we don't have suggestions yet,
@@ -65,9 +66,9 @@ displaySuggestions = function () {
 
     // handling plurals
     if (len === 1) {
-        html += 'item:';
+        html += chrome.i18n.getMessage('item') + ':';
     } else {
-        html += 'items:';
+        html += chrome.i18n.getMessage('items') + ':';
     }
 
     $.each(suggestions, function (index, item) {
@@ -113,8 +114,9 @@ init = function() {
         wp.getCategories();
 
         // add the #loaddpla link
-        // @todo i18n, don't pass English strings here, use chrome.i18n.getMessage()
-        $('#mw-content-text').prepend('<div class="hatnote"><a id="loaddpla">Search the <abbr title="Digital Public Library of America">DPLA</abbr>…</a></div>').find('#loaddpla').show('slow');
+        $('#mw-content-text').prepend('<div class="hatnote"><a id="loaddpla">' +
+            chrome.i18n.getMessage('searchTheApi') + '…</a></div>')
+            .find('#loaddpla').show('slow');
         $('#loaddpla').on('click', displaySuggestions);
 
         chrome.runtime.sendMessage(wp);
