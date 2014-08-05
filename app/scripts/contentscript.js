@@ -109,8 +109,7 @@ init = function() {
     if (tab.attr('id').substr(-4) === 'main' &&
         tab.hasClass('selected') &&
         $('#ca-view').hasClass('selected') &&
-        // @todo this assumes English - use end of URL instead
-        tab.text() !== 'Main Page') {
+        !location.pathname.match('^/wiki/Main_Page$') ) {
         // collect page information
         wp.getRedirects();
         wp.getCategories();
