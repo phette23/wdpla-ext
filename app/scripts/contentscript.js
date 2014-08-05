@@ -125,7 +125,6 @@ init = function() {
 
         chrome.runtime.onMessage.addListener(function (req) {
             suggestions = req;
-            console.log('Suggestions:', suggestions);
         });
     }
 };
