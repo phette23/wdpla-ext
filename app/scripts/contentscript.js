@@ -19,6 +19,7 @@ wp = {
     // find any '"Foo" redirects here.' alternate titles
     getRedirects: function () {
         $('.hatnote').each(function (index, el){
+            // @todo this assumes English
             var test = $(el).text().match('"(.*)" redirects here.');
 
             if (test) {
@@ -108,6 +109,7 @@ init = function() {
     if (tab.attr('id').substr(-4) === 'main' &&
         tab.hasClass('selected') &&
         $('#ca-view').hasClass('selected') &&
+        // @todo this assumes English - use end of URL instead
         tab.text() !== 'Main Page') {
         // collect page information
         wp.getRedirects();
