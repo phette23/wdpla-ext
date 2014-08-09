@@ -6,8 +6,6 @@ var mountFolder = function (connect, dir) {
 };
 
 module.exports = function (grunt) {
-    // show elapsed time at the end
-    require('time-grunt')(grunt);
     // load all grunt tasks
     require('load-grunt-tasks')(grunt);
 
@@ -91,16 +89,6 @@ module.exports = function (grunt) {
             html: ['<%= yeoman.dist %>/{,*/}*.html'],
             css: ['<%= yeoman.dist %>/styles/{,*/}*.css']
         },
-        imagemin: {
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: '<%= yeoman.app %>/images',
-                    src: '{,*/}*.{png,jpg,jpeg}',
-                    dest: '<%= yeoman.dist %>/images'
-                }]
-            }
-        },
         cssmin: {
             dist: {
                 files: {
@@ -121,7 +109,8 @@ module.exports = function (grunt) {
                     dest: '<%= yeoman.dist %>',
                     src: [
                         '*.{ico,png,txt}',
-                        'images/{,*/}*.{webp,gif}',
+                        // no need to copy jpg, which aren't used
+                        'images/{,*/}*.{webp,gif,png}',
                         '_locales/{,*/}*.json'
                     ]
                 }, {
@@ -165,7 +154,6 @@ module.exports = function (grunt) {
         'clean:dist',
         'chromeManifest:dist',
         'useminPrepare',
-        'imagemin',
         'cssmin',
         'concat',
         'uglify',
