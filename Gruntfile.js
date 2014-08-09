@@ -138,7 +138,7 @@ module.exports = function (grunt) {
         compress: {
             dist: {
                 options: {
-                    archive: 'package/WikipeDPLA.zip'
+                    archive: 'webstore/WikipeDPLA.zip'
                 },
                 files: [{
                     expand: true,
