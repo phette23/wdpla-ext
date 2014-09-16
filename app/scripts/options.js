@@ -15,13 +15,24 @@ function onLoadstyleChange (ev) {
     storage.set({ 'loadstyle': ev.target.value}, storageSet);
 }
 
-function onNumresultsChange (ev) {
+function limitNum (num, min, max) {
     // input values are text by default, parse into integer
-    storage.set({ 'numresults': parseInt(ev.target.value, 10) }, storageSet);
+    var int = parseInt(num, 10);
+
+    if (int < min) {
+        return min;
+    }
+
+    return num > max ? max : num;
+}
+
+function onNumresultsChange (ev) {
+    // @todo should set back to min or max if num is outside bounds
+    storage.set({ 'numresults': limitNum(ev.target.value, 1, 10) }, storageSet);
 }
 
 function localize () {
-    // set of CSS selector-textContent pairings
+    // set of CSS selector:textContent pairings
     var map = {
         'h1': 'optsTitle',
         'title': 'optsTitle',
