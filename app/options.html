@@ -7,32 +7,36 @@
     </head>
     <body>
 
-        <h1>WikipeDPLA Options</h1>
+        <header>
+            <h1>WikipeDPLA Options</h1>
+        </header>
 
-        <form action="self" role="form">
-            <p>
-                <label for="loadstyle">How are Results Inserted</label>
-                <select class="form-control" name="loadstyle" id="loadstyle">
-                    <option value="icon" selected>
-                        By clicking an icon by the article's title
-                    </option>
-                    <option value="dablink">
-                        By clicking a link at the top of the article
-                    </option>
-                    <option value="auto">
-                        Automatically
-                    </option>
-                </select>
-            </p>
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label class="control-label col-sm-3" for="loadstyle">How are Results Inserted</label>
+                <div class="col-sm-9">
+                    <select class="form-control" name="loadstyle" id="loadstyle">
+                        <option value="icon" selected>
+                            By clicking an icon by the article's title
+                        </option>
+                        <option value="dablink">
+                            By clicking a link at the top of the article
+                        </option>
+                        <option value="auto">
+                            Automatically
+                        </option>
+                    </select>
+                </div>
+            </div>
 
-            <p>
-                <label for="numresults">Number of Results Shown</label>
-                <input class="form-control" type="number" min="1" max="10" value="5" name="numresults" id="numresults">
-            </p>
+            <div class="form-group">
+                <label class="control-label col-sm-3" for="numresults">Number of Results Shown</label>
+                <div class="col-sm-9">
+                    <input class="form-control" type="number" min="1" max="10" value="5" name="numresults" id="numresults">
+                </div>
+            </div>
         </form>
 
-    <!-- build:js scripts/options.js -->
     <script src="scripts/options.js"></script>
-    <!-- endbuild -->
     </body>
 </html>

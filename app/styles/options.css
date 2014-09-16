@@ -1,1 +1,9 @@
 /* for the Options page */
+body {
+    margin: 1em;
+}
+
+input,
+select {
+    max-width: 40em;
+}
