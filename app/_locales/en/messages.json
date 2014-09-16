@@ -21,6 +21,9 @@
     "items": {
         "message": "items"
     },
+    "noResults": {
+        "message": "nothing found! Let us know about it"
+    },
     "optsTitle": {
         "message": "WikipeDPLA Options",
         "description": "options: page <h1> & title"
@@ -44,5 +47,8 @@
     "optsNumresultsLabel": {
         "message": "Number of Results Shown",
         "description": "options: label for number of results <input>"
+    },
+    "optsSuccessfulUpdate": {
+        "message": "Options updated successfully."
     }
 }
