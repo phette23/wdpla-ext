@@ -1,9 +1,14 @@
 /* for the Options page */
 body {
     margin: 1em;
+    font-size: 1.5em;
 }
 
 input,
 select {
     max-width: 40em;
+}
+
+.notices p {
+    padding: 1em;
 }

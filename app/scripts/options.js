@@ -8,7 +8,22 @@ var d = document
 
 // unneeded placeholder, fired whenever any form el changes
 function storageSet () {
+    var p = d.createElement('p'),
+        notices = d.getElementsByClassName('notices')[0],
+        timeout;
+
     console.log('options updated');
+
+    p.textContent = chrome.i18n.getMessage('optsSuccessfulUpdate');
+    p.className = ['bg-success col-sm-offset-3'];
+
+    // @todo should animate, this is terrible
+    notices.appendChild(p);
+
+    timeout = setTimeout(function(){
+        notices.removeChild(p);
+        clearTimeout(timeout);
+    }, 2500);
 }
 
 function onLoadstyleChange (ev) {
