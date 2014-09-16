@@ -13,7 +13,6 @@
     "default_locale": "en",
     "background": {
         "scripts": [
-            "bower_components/jquery/jquery.min.js",
             "scripts/background.js"
         ]
     },

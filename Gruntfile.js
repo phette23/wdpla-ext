@@ -89,18 +89,6 @@ module.exports = function (grunt) {
                 }]
             }
         },
-        chromeManifest: {
-            dist: {
-                options: {
-                    buildnumber: false,
-                    background: {
-                        target:'scripts/background.js'
-                    }
-                },
-                src: '<%= yeoman.app %>',
-                dest: '<%= yeoman.dist %>'
-            }
-        },
         compress: {
             dist: {
                 options: {
@@ -117,8 +105,7 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('build', [
-        'clean:dist',
-        'chromeManifest:dist',
+        'clean',
         'cssmin',
         'uglify',
         'copy',

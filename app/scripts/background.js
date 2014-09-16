@@ -1,4 +1,3 @@
-/* global $ */
 /*
  * background.js:
  * listen for messages from contentscript.js
@@ -67,38 +66,51 @@ subsetDpla = function (dpla) {
 },
 // send XHR to DPLA, pass results to callback
 getDplaResults = function (wp, cb) {
-    var url = buildURI(query);
+    var url = buildURI(query),
+        xhr = new XMLHttpRequest();
 
-    // currently the only place where jQuery dependency is used
-    $.ajax({
-        url: url,
-        dataType: 'json'
-    })
-    .done(function(data) {
-        var results = subsetDpla(data);
+    // need to check storage to get page_size param
+    chrome.storage.sync.get('numresults', function (obj) {
+        // default to a limit of 5
+        url += '&page_size=' + (obj.numresults ? obj.numresults : 5);
 
-        // if we didn't get anything, try a fallback
-        if (results.length === 0) {
-            // first look in redirects
-            if (wp.redirects.length !== 0) {
-                query = wp.redirects.pop();
-                // out of redirects? look in categories
-            } else if (wp.categories.length !== 0) {
-                query = wp.categories.pop();
-            } else {
-                // @todo handle this situation
-                console.log('Not a single DPLA search result…damn.');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                var data = JSON.parse(xhr.responseText),
+                    results = subsetDpla(JSON.parse(xhr.responseText));
+
+                console.log('DPLA response:', data);
+
+                // if we didn't get anything, try a fallback
+                if (results.length === 0) {
+                    // first look in redirects
+                    if (wp.redirects.length !== 0) {
+                        query = wp.redirects.pop();
+                        // out of redirects? look in categories
+                    } else if (wp.categories.length !== 0) {
+                        query = wp.categories.pop();
+                    } else {
+                        // send a fake "result" to be displayed
+                        // which tells user to report the page
+                        cb([{
+                            'title': chrome.i18n.getMessage('noResults'),
+                            'uri': 'https://chrome.google.com/webstore/detail/wikipedpla/jeblaajgenlcpcfhmgdhdeehjfbfhmml/reviews',
+                            'isImage': false
+                        }]);
+                        return;
+                    }
+
+                    // will use the new query
+                    getDplaResults(wp, cb);
+                    return;
+                }
+
+                cb(results);
             }
+        };
 
-            // will use the new query
-            getDplaResults(wp, cb);
-            return;
-        }
-
-        cb(results);
-    })
-    .fail(function(data, status, xhr) {
-        console.log('XHR error. Status:', status, 'XHR:', xhr);
+        xhr.open('GET', url, true);
+        xhr.send();
     });
 };
 
@@ -110,6 +122,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
     query = wp.title;
 
     console.log('Message from a content script at', sender.tab.url);
+    console.log('{wp}:', wp);
 
     getDplaResults(wp, function (suggestions) {
         // a callback 3rd param to addListener never seems to work
