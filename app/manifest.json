@@ -18,14 +18,6 @@
         ]
     },
     "options_page": "options.html",
-    "page_action": {
-        "default_icon": {
-            "19": "images/dpla-logo-19.png",
-            "38": "images/dpla-logo-38.png"
-        },
-        "default_title": "WikipeDPLA",
-        "default_popup": "popup.html"
-    },
     "permissions": [
         "http://api.dp.la/",
         "storage"
