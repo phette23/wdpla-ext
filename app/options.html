@@ -2,16 +2,17 @@
 <html>
     <head>
         <title>WikipeDPLA Options</title>
+        <link href="styles/bootstrap.css" rel="stylesheet">
         <link href="styles/options.css" rel="stylesheet">
     </head>
     <body>
 
         <h1>WikipeDPLA Options</h1>
 
-        <form action="">
+        <form action="self" role="form">
             <p>
                 <label for="loadstyle">How are Results Inserted</label>
-                <select name="loadstyle" id="loadstyle">
+                <select class="form-control" name="loadstyle" id="loadstyle">
                     <option value="icon" selected>
                         By clicking an icon by the article's title
                     </option>
@@ -26,7 +27,7 @@
 
             <p>
                 <label for="numresults">Number of Results Shown</label>
-                <input type="number" min="1" max="10" value="5" name="numresults" id="numresults" />
+                <input class="form-control" type="number" min="1" max="10" value="5" name="numresults" id="numresults">
             </p>
         </form>
 

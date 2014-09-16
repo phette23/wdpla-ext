@@ -17,6 +17,7 @@
             "scripts/background.js"
         ]
     },
+    "options_page": "options.html",
     "page_action": {
         "default_icon": {
             "19": "images/dpla-logo-19.png",
@@ -26,7 +27,8 @@
         "default_popup": "popup.html"
     },
     "permissions": [
-        "http://api.dp.la/"
+        "http://api.dp.la/",
+        "storage"
     ],
     "content_scripts": [
         {
