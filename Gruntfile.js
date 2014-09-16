@@ -1,9 +1,5 @@
 /*jshint camelcase: false*/
-// Generated on 2014-02-17 using generator-chrome-extension 0.2.5
 'use strict';
-var mountFolder = function (connect, dir) {
-    return connect.static(require('path').resolve(dir));
-};
 
 module.exports = function (grunt) {
     // load all grunt tasks
@@ -17,28 +13,6 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         yeoman: yeomanConfig,
-        watch: {
-            options: {
-                spawn: false
-            }
-        },
-        connect: {
-            options: {
-                port: 9000,
-                // change this to '0.0.0.0' to access the server from outside
-                hostname: 'localhost'
-            },
-            test: {
-                options: {
-                    middleware: function (connect) {
-                        return [
-                            mountFolder(connect, '.tmp'),
-                            mountFolder(connect, 'test')
-                        ];
-                    }
-                }
-            }
-        },
         clean: {
             dist: {
                 files: [{
@@ -48,8 +22,7 @@ module.exports = function (grunt) {
                         '<%= yeoman.dist %>/*'
                     ]
                 }]
-            },
-            server: '.tmp'
+            }
         },
         jshint: {
             options: {
@@ -57,8 +30,7 @@ module.exports = function (grunt) {
             },
             all: [
                 'Gruntfile.js',
-                '<%= yeoman.app %>/scripts/{,*/}*.js',
-                'test/spec/{,*/}*.js'
+                '<%= yeoman.app %>/scripts/{,*/}*.js'
             ]
         },
         // eventually use for options.css + bootstrap.css
@@ -73,8 +45,7 @@ module.exports = function (grunt) {
                 files: {
                     '<%= yeoman.dist %>/scripts/background.js': ['<%= yeoman.app %>/scripts/background.js'],
                     '<%= yeoman.dist %>/scripts/contentscript.js': ['<%= yeoman.app %>/scripts/contentscript.js'],
-                    '<%= yeoman.dist %>/scripts/options.js': ['<%= yeoman.app %>/scripts/options.js'],
-                    '<%= yeoman.dist %>/scripts/popup.js': ['<%= yeoman.app %>/scripts/popup.js']
+                    '<%= yeoman.dist %>/scripts/options.js': ['<%= yeoman.app %>/scripts/options.js']
                 }
             }
         },
@@ -82,7 +53,10 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     '<%= yeoman.dist %>/styles/main.css': [
-                        '<%= yeoman.app %>/styles/{,*/}*.css'
+                        '<%= yeoman.app %>/styles/main.css'
+                    ],
+                    '<%= yeoman.dist %>/styles/options.css': [
+                        '<%= yeoman.app %>/styles/options.css'
                     ]
                 }
             }
@@ -96,13 +70,14 @@ module.exports = function (grunt) {
                     cwd: '<%= yeoman.app %>',
                     dest: '<%= yeoman.dist %>',
                     src: [
-                        '*.html',
-                        '*.{ico,png,txt}',
+                        '*.{ico,png,txt,html,json}',
                         // no need to copy jpg, which aren't used
                         'images/{,*/}*.{webp,gif,png}',
                         '_locales/{,*/}*.json',
+                        // bootstrap is already minified so don't use cssmin
                         'styles/bootstrap.css',
-                        'styles/options.css'
+                        // needed for content scripts
+                        'bower_components/jquery/jquery.min.js'
                     ]
                 }, {
                     expand: true,
@@ -145,7 +120,6 @@ module.exports = function (grunt) {
         'clean:dist',
         'chromeManifest:dist',
         'cssmin',
-        'concat',
         'uglify',
         'copy',
         'compress'
