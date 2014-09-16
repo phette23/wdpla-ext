@@ -45,8 +45,7 @@ module.exports = function (grunt) {
                     dot: true,
                     src: [
                         '.tmp',
-                        '<%= yeoman.dist %>/*',
-                        '!<%= yeoman.dist %>/.git*'
+                        '<%= yeoman.dist %>/*'
                     ]
                 }]
             },
@@ -62,38 +61,27 @@ module.exports = function (grunt) {
                 'test/spec/{,*/}*.js'
             ]
         },
-        // not used since Uglify task does concat,
-        // but still available if needed
-        /*concat: {
-            dist: {}
-        },*/
-        // not enabled since usemin task does concat and uglify
-        // check index.html to edit your build targets
-        // enable this task if you prefer defining your build targets here
-        /*uglify: {
-            dist: {}
-        },*/
-        useminPrepare: {
-            options: {
-                dest: '<%= yeoman.dist %>'
-            },
-            html: [
-                '<%= yeoman.app %>/popup.html',
-                '<%= yeoman.app %>/options.html'
-            ]
-        },
-        usemin: {
-            options: {
-                dirs: ['<%= yeoman.dist %>']
-            },
-            html: ['<%= yeoman.dist %>/{,*/}*.html'],
-            css: ['<%= yeoman.dist %>/styles/{,*/}*.css']
+        // eventually use for options.css + bootstrap.css
+        // concat: {
+        //     dist: {
+        //         src: [],
+        //         dest: ''
+        //     }
+        // },
+        uglify: {
+            dist: {
+                files: {
+                    '<%= yeoman.dist %>/scripts/background.js': ['<%= yeoman.app %>/scripts/background.js'],
+                    '<%= yeoman.dist %>/scripts/contentscript.js': ['<%= yeoman.app %>/scripts/contentscript.js'],
+                    '<%= yeoman.dist %>/scripts/options.js': ['<%= yeoman.app %>/scripts/options.js'],
+                    '<%= yeoman.dist %>/scripts/popup.js': ['<%= yeoman.app %>/scripts/popup.js']
+                }
+            }
         },
         cssmin: {
             dist: {
                 files: {
                     '<%= yeoman.dist %>/styles/main.css': [
-                        '.tmp/styles/{,*/}*.css',
                         '<%= yeoman.app %>/styles/{,*/}*.css'
                     ]
                 }
@@ -108,10 +96,13 @@ module.exports = function (grunt) {
                     cwd: '<%= yeoman.app %>',
                     dest: '<%= yeoman.dist %>',
                     src: [
+                        '*.html',
                         '*.{ico,png,txt}',
                         // no need to copy jpg, which aren't used
                         'images/{,*/}*.{webp,gif,png}',
-                        '_locales/{,*/}*.json'
+                        '_locales/{,*/}*.json',
+                        'styles/bootstrap.css',
+                        'styles/options.css'
                     ]
                 }, {
                     expand: true,
@@ -153,12 +144,10 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'clean:dist',
         'chromeManifest:dist',
-        'useminPrepare',
         'cssmin',
         'concat',
         'uglify',
         'copy',
-        'usemin',
         'compress'
     ]);
 
