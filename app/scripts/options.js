@@ -6,11 +6,11 @@ var d = document
     // see https://developer.chrome.com/extensions/storage
     , storage = chrome.storage.sync;
 
-// unneeded placeholder, fired whenever any form el changes
+// callback fired whenever any form el changes
 function storageSet () {
     var p = d.createElement('p'),
-        notices = d.getElementsByClassName('notices')[0],
-        timeout;
+        // div for putting information items
+        notices = d.getElementsByClassName('notices')[0];
 
     console.log('options updated');
 
@@ -20,9 +20,9 @@ function storageSet () {
     // @todo should animate, this is terrible
     notices.appendChild(p);
 
+    // remove the notice in 2.5s
     timeout = setTimeout(function(){
         notices.removeChild(p);
-        clearTimeout(timeout);
     }, 2500);
 }
 
@@ -30,6 +30,7 @@ function onLoadstyleChange (ev) {
     storage.set({ 'loadstyle': ev.target.value}, storageSet);
 }
 
+// used in onNumresultsChange to force an appropriate value
 function limitNum (num, min, max) {
     // input values are text by default, parse into integer
     var int = parseInt(num, 10);
@@ -42,10 +43,11 @@ function limitNum (num, min, max) {
 }
 
 function onNumresultsChange (ev) {
-    // @todo should set back to min or max if num is outside bounds
+    // @todo min, max should be based in DOM (props on the el)
     storage.set({ 'numresults': limitNum(ev.target.value, 1, 10) }, storageSet);
 }
 
+// replace all placeholder English text on page with i18n text
 function localize () {
     // set of CSS selector:textContent pairings
     var map = {
@@ -65,6 +67,7 @@ function localize () {
     });
 }
 
+// replace placeholder form values with actual values from storage
 function fillOptions () {
     // null => get all storage items
     storage.get(null, function (opts) {
