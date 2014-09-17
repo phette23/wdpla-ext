@@ -80,6 +80,13 @@ function fillOptions () {
     });
 }
 
+// eventListeners for page load
+function listen () {
+    // listen for changes then save them to storage
+    loadstyle.addEventListener('change', onLoadstyleChange, false);
+    numresults.addEventListener('change', onNumresultsChange, false);
+}
+
 // add event listeners, fill in stored options values
 // replace text with localized strings
 function init () {
@@ -89,9 +96,8 @@ function init () {
     // fill in any already-selected options
     fillOptions();
 
-    // listen for changes then save them to storage
-    loadstyle.addEventListener('change', onLoadstyleChange, false);
-    numresults.addEventListener('change', onNumresultsChange, false);
+    // eventListeners on form inputs
+    listen();
 }
 
 // kick it off
