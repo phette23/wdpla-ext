@@ -6,24 +6,30 @@ var d = document
     // see https://developer.chrome.com/extensions/storage
     , storage = chrome.storage.sync;
 
-// callback fired whenever any form el changes
-function storageSet () {
+// put message in notices area of DOM
+function msg (style, txt, time) {
     var p = d.createElement('p'),
-        // div for putting information items
-        notices = d.getElementsByClassName('notices')[0];
+        // div for informational items
+        notices = d.getElementsByClassName('notices')[0],
+        // 2.5s default delay time
+        time = time !== undefined ? time : 2500;
 
-    console.log('options updated');
-
-    p.textContent = chrome.i18n.getMessage('optsSuccessfulUpdate');
-    p.className = ['bg-success col-sm-offset-3'];
+    p.textContent = txt;
+    p.className = style += ' col-sm-offset-3';
 
     // @todo should animate, this is terrible
     notices.appendChild(p);
 
     // remove the notice in 2.5s
-    timeout = setTimeout(function(){
+    setTimeout(function(){
         notices.removeChild(p);
-    }, 2500);
+    }, time);
+}
+
+function storageSet () {
+    msg('bg-success', chrome.i18n.getMessage('optsSuccessfulUpdate'));
+
+    console.log('options updated');
 }
 
 function onLoadstyleChange (ev) {
@@ -31,20 +37,28 @@ function onLoadstyleChange (ev) {
 }
 
 // used in onNumresultsChange to force an appropriate value
-function limitNum (num, min, max) {
+function validNum (num, min, max) {
     // input values are text by default, parse into integer
-    var int = parseInt(num, 10);
+    var int = parseInt(num, 10),
+        min = parseInt(min, 10),
+        max = parseInt(max, 10);
 
-    if (int < min) {
-        return min;
+    // most likely case is too big so check that 1st
+    if (int > max || int < min) {
+        return false;
     }
 
-    return num > max ? max : num;
+    return true;
 }
 
 function onNumresultsChange (ev) {
-    // @todo min, max should be based in DOM (props on the el)
-    storage.set({ 'numresults': limitNum(ev.target.value, 1, 10) }, storageSet);
+    var input = ev.target;
+
+    if (validNum(input.value, input.min, input.max)) {
+        storage.set({'numresults': input.value}, storageSet);
+    } else {
+        msg('bg-warning', chrome.i18n.getMessage('optsNumresultsLabel') + ' ' + chrome.i18n.getMessage('must_be_between') + ' ' + input.min + chrome.i18n.getMessage('and') + ' ' + input.max);
+    }
 }
 
 // replace all placeholder English text on page with i18n text

@@ -50,5 +50,11 @@
     },
     "optsSuccessfulUpdate": {
         "message": "Options updated successfully."
+    },
+    "must_be_between": {
+        "message": "must be between"
+    },
+    "and" : {
+        "message": "and"
     }
 }

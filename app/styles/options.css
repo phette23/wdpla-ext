@@ -5,7 +5,8 @@ body {
 }
 
 input,
-select {
+select,
+.notices p {
     max-width: 40em;
 }
 
