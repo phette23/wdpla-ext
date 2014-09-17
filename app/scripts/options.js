@@ -83,14 +83,6 @@ function fillOptions () {
 // add event listeners, fill in stored options values
 // replace text with localized strings
 function init () {
-    // replace defaults with stored values
-    storage.get('loadstyle', function (obj) {
-        loadstyle.value = obj.loadstyle;
-    });
-    storage.get('numresults', function (obj) {
-        numresults.value = obj.numresults;
-    });
-
     // replace text with localized strings
     localize();
 
