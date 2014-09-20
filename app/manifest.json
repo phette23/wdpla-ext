@@ -1,6 +1,6 @@
 {
     "name": "__MSG_appName__",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "manifest_version": 2,
     "description": "__MSG_appDescription__",
     "icons": {
@@ -16,10 +16,8 @@
             "scripts/background.js"
         ]
     },
-    "options_page": "options.html",
     "permissions": [
-        "http://api.dp.la/",
-        "storage"
+        "http://api.dp.la/"
     ],
     "content_scripts": [
         {
