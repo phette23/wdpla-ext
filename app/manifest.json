@@ -16,8 +16,10 @@
             "scripts/background.js"
         ]
     },
+    "options_page": "options.html",
     "permissions": [
-        "http://api.dp.la/"
+        "http://api.dp.la/",
+        "storage"
     ],
     "content_scripts": [
         {

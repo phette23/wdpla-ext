@@ -69,47 +69,49 @@ getDplaResults = function (wp, cb) {
     var url = buildURI(query),
         xhr = new XMLHttpRequest();
 
-    // default to a limit of 10
-    // will be user configurable in next release
-    url += '&page_size=10';
+    // need to check storage to get page_size param
+    chrome.storage.sync.get('numresults', function (obj) {
+        // default to a limit of 5
+        url += '&page_size=' + (obj.numresults ? obj.numresults : 5);
 
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            var data = JSON.parse(xhr.responseText),
-                results = subsetDpla(JSON.parse(xhr.responseText));
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                var data = JSON.parse(xhr.responseText),
+                    results = subsetDpla(JSON.parse(xhr.responseText));
 
-            console.log('DPLA response:', data);
+                console.log('DPLA response:', data);
 
-            // if we didn't get anything, try a fallback
-            if (results.length === 0) {
-                // first look in redirects
-                if (wp.redirects.length !== 0) {
-                    query = wp.redirects.pop();
-                    // out of redirects? look in categories
-                } else if (wp.categories.length !== 0) {
-                    query = wp.categories.pop();
-                } else {
-                    // send a fake "result" to be displayed
-                    // which tells user to report the page
-                    cb([{
-                        'title': chrome.i18n.getMessage('noResults'),
-                        'uri': 'https://chrome.google.com/webstore/detail/wikipedpla/jeblaajgenlcpcfhmgdhdeehjfbfhmml/reviews',
-                        'isImage': false
-                    }]);
+                // if we didn't get anything, try a fallback
+                if (results.length === 0) {
+                    // first look in redirects
+                    if (wp.redirects.length !== 0) {
+                        query = wp.redirects.pop();
+                        // out of redirects? look in categories
+                    } else if (wp.categories.length !== 0) {
+                        query = wp.categories.pop();
+                    } else {
+                        // send a fake "result" to be displayed
+                        // which tells user to report the page
+                        cb([{
+                            'title': chrome.i18n.getMessage('noResults'),
+                            'uri': 'https://chrome.google.com/webstore/detail/wikipedpla/jeblaajgenlcpcfhmgdhdeehjfbfhmml/reviews',
+                            'isImage': false
+                        }]);
+                        return;
+                    }
+
+                    // will use the new query
+                    getDplaResults(wp, cb);
                     return;
                 }
 
-                // will use the new query
-                getDplaResults(wp, cb);
-                return;
+                cb(results);
             }
+        };
 
-            cb(results);
-        }
-    };
-
-    xhr.open('GET', url, true);
-    xhr.send();
+        xhr.open('GET', url, true);
+        xhr.send();
+    });
 };
 
 chrome.runtime.onMessage.addListener(function (request, sender) {
