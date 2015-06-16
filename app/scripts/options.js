@@ -1,3 +1,4 @@
+/*jshint -W004 */
 'use strict';
 
 var d = document
