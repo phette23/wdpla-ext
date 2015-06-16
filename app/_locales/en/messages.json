@@ -21,6 +21,9 @@
     "items": {
         "message": "items"
     },
+    "seeSearch": {
+        "message": "see search"
+    },
     "noResults": {
         "message": "nothing found! Let us know about it"
     },

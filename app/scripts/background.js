@@ -74,12 +74,15 @@ getDplaResults = function (wp, cb) {
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4) {
                 var data = JSON.parse(xhr.responseText),
-                    results = subsetDpla(JSON.parse(xhr.responseText));
+                    results = {
+                        query: wp.query,
+                        list: subsetDpla(JSON.parse(xhr.responseText))
+                    };
 
                 console.log('DPLA response:', data);
 
                 // if we didn't get anything, try a fallback
-                if (results.length === 0) {
+                if (results.list.length === 0) {
                     // first look in redirects
                     if (wp.redirects.length !== 0) {
                         wp.query = wp.redirects.pop();
@@ -89,11 +92,14 @@ getDplaResults = function (wp, cb) {
                     } else {
                         // send a fake "result" to be displayed
                         // which tells user to report the page
-                        cb([{
-                            'title': chrome.i18n.getMessage('noResults'),
-                            'uri': 'https://chrome.google.com/webstore/detail/wikipedpla/jeblaajgenlcpcfhmgdhdeehjfbfhmml/reviews',
-                            'isImage': false
-                        }]);
+                        cb({
+                            query: null,
+                            list: [{
+                                'title': chrome.i18n.getMessage('noResults'),
+                                'uri': 'https://chrome.google.com/webstore/detail/wikipedpla/jeblaajgenlcpcfhmgdhdeehjfbfhmml/reviews',
+                                'isImage': false
+                            }]
+                        });
                         return;
                     }
 
@@ -119,9 +125,9 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
     console.log('Message from a content script at', sender.tab.url);
     console.log('{wp}:', wp);
 
-    getDplaResults(wp, function (suggestions) {
+    getDplaResults(wp, function (results) {
         // a callback 3rd param to addListener never seems to work
         // but using this manual callback method does
-        chrome.tabs.sendMessage(id, suggestions);
+        chrome.tabs.sendMessage(id, results);
     });
 });
