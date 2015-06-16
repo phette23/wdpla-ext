@@ -47,6 +47,11 @@ module.exports = function (grunt) {
                     '<%= yeoman.dist %>/scripts/contentscript.js': ['<%= yeoman.app %>/scripts/contentscript.js'],
                     '<%= yeoman.dist %>/scripts/options.js': ['<%= yeoman.app %>/scripts/options.js']
                 }
+            },
+            options: {
+                compress: {
+                    drop_console: true
+                }
             }
         },
         cssmin: {
