@@ -9,10 +9,7 @@
 'use strict';
 
 // construct a query URI
-// @todo query global var is a bad idea, rethink this
-// e.g. consider multiple tabs searching DPLA at once, crossed streams
-var query = '',
-buildURI = function (query) {
+var buildURI = function (query) {
     var base = 'http://api.dp.la/v2/items',
         key = 'e4c036f3302aad8d8c188683967b9619';
 
@@ -66,7 +63,7 @@ subsetDpla = function (dpla) {
 },
 // send XHR to DPLA, pass results to callback
 getDplaResults = function (wp, cb) {
-    var url = buildURI(query),
+    var url = buildURI(wp.query),
         xhr = new XMLHttpRequest();
 
     // need to check storage to get page_size param
@@ -85,10 +82,10 @@ getDplaResults = function (wp, cb) {
                 if (results.length === 0) {
                     // first look in redirects
                     if (wp.redirects.length !== 0) {
-                        query = wp.redirects.pop();
+                        wp.query = wp.redirects.pop();
                         // out of redirects? look in categories
                     } else if (wp.categories.length !== 0) {
-                        query = wp.categories.pop();
+                        wp.query = wp.categories.pop();
                     } else {
                         // send a fake "result" to be displayed
                         // which tells user to report the page
@@ -118,8 +115,6 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
     // contentscript sends wp object with info about article
     var wp = request,
         id = sender.tab.id;
-
-    query = wp.title;
 
     console.log('Message from a content script at', sender.tab.url);
     console.log('{wp}:', wp);

@@ -12,8 +12,10 @@
 'use strict';
 
 var $ = jQuery,
+title = $('#firstHeading').text(),
 wp = {
-    title: $('#firstHeading').text(),
+    title: title,
+    query: title, // query initially set to article title
     redirects: [],
     categories: [],
     // find any '"Foo" redirects here.' alternate titles
