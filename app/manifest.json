@@ -31,7 +31,7 @@
                 "styles/main.css"
             ],
             "js": [
-                "bower_components/jquery/jquery.min.js",
+                "scripts/vendor/jquery-3.4.1.min.js",
                 "scripts/contentscript.js"
             ],
             "run_at": "document_end",
