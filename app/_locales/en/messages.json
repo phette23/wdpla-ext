@@ -35,8 +35,8 @@
         "message": "How are Results Inserted",
         "description": "options: label for loading style <select>"
     },
-    "optsLoadIcon": {
-        "message": "By clicking an icon by the article's title",
+    "optsLoadTitle": {
+        "message": "By clicking the article's title",
         "description": "options: click icon by title to load results"
     },
     "optsLoadDablink": {
