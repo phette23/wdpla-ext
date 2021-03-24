@@ -75,7 +75,7 @@ module.exports = function (grunt) {
                         // bootstrap is already minified so don't use cssmin
                         'styles/bootstrap.css',
                         // needed for content scripts
-                        'bower_components/jquery/jquery.min.js'
+                        'scripts/vendor/*.js'
                     ]
                 }, {
                     expand: true,
