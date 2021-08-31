@@ -84,10 +84,9 @@ getDplaResults = function (wp, cb) {
                     } else if (wp.categories.length !== 0) {
                         wp.query = wp.categories.pop()
                     } else {
-                        // send a fake "result" to be displayed
-                        // which tells user to report the page
+                        // tell user to report the page on GitHub
                         return cb({
-                            query: null,
+                            query: wp.query,
                             list: [{
                                 'title': chrome.i18n.getMessage('noResults'),
                                 'uri': 'https://chrome.google.com/webstore/detail/wikipedpla/jeblaajgenlcpcfhmgdhdeehjfbfhmml/reviews',

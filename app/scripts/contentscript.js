@@ -1,6 +1,5 @@
 /* jQuery is available since it's loaded as another content script
- * using v. 3.4.1 since that's what Wikipedia uses, helps with consistency
- * @TODO revisit jQuery dependency, probably not necessary
+ * using v. 3.6.0 since that's what Wikipedia uses, helps with consistency
  *
  * contentscript.js:
  * parse the article's HTML into wp object
@@ -9,7 +8,7 @@
  */
 
 let $ = jQuery,
-title = $.trim($('#firstHeading').text()),
+title = $('#firstHeading').text().trim(),
 wp = {
     title: title,
     query: title, // query initially set to article title

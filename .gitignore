@@ -2,7 +2,6 @@ node_modules
 .tmp
 dist
 .sass-cache
-app/bower_components
 app/styles/scss
 package
 webstore
