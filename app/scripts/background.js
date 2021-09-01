@@ -86,7 +86,7 @@ getDplaResults = function (wp, cb) {
                     } else {
                         // tell user to report the page on GitHub
                         return cb({
-                            query: wp.query,
+                            query: wp.title,
                             list: [{
                                 'title': chrome.i18n.getMessage('noResults'),
                                 'uri': 'https://chrome.google.com/webstore/detail/wikipedpla/jeblaajgenlcpcfhmgdhdeehjfbfhmml/reviews',
