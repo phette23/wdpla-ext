@@ -7,14 +7,14 @@
  */
 
 // construct a query URI
-let buildURI = function (query) {
+let buildURI = query => {
     let base = 'http://api.dp.la/v2/items',
         key = 'e4c036f3302aad8d8c188683967b9619';
 
     return base + '?api_key=' + key + '&q=' + encodeURIComponent(query)
 },
 // truncate string if too long & add …
-trunc = function (str, cutoff=60) {
+trunc = (str, cutoff=60) => {
     // lots of Hathi Trust titles end in ' /'
     let newStr = str.replace(/(\s\/)$/, '')
 
@@ -26,7 +26,7 @@ trunc = function (str, cutoff=60) {
     return newStr
 },
 // given DPLA doc, see if its type array contains 'image'
-isItAnImage = function (types) {
+isItAnImage = types => {
     // types can be array or string
     if (Array.isArray(types) && types.includes('image')) {
         return true
@@ -37,28 +37,23 @@ isItAnImage = function (types) {
     return false
 },
 // map DPLA metadata into simpler subset
-dplaMap = function (item) {
+dplaMap = item => {
     let newItem = {}
         , res = item.sourceResource;
 
-    newItem.title = Array.isArray(res.title) ? res.title[0] : res.title
-    newItem.title = trunc(newItem.title)
+    newItem.title = trunc(Array.isArray(res.title) ? res.title[0] : res.title)
     newItem.uri = item.isShownAt
     newItem.isImage = isItAnImage(res.type)
 
     return newItem
 },
 // perform the map above
-subsetDpla = function (dpla) {
-    return dpla.docs.map(dplaMap)
-},
+subsetDpla = dpla => dpla.docs.map(dplaMap),
 // get data from DPLA, pass results to callback
-getDplaResults = function (wp, cb) {
+getDplaResults = (wp, cb) => {
     // get options from storage, will send to content script
-    chrome.storage.sync.get({'numresults': 5, 'loadstyle': 'dablink'}, function (options) {
-        // default to a limit of 5
-        let url = buildURI(wp.query) + '&page_size=' + (options.numresults ? options.numresults : 5)
-        fetch(url)
+    chrome.storage.sync.get({'numresults': 5, 'loadstyle': 'dablink'}, options => {
+        fetch(buildURI(wp.query) + '&page_size=' + (options.numresults ? options.numresults : 5))
             .then(response => response.json())
             .then(data => {
                 let resultsAndOptions = {

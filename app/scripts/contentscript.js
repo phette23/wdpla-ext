@@ -15,8 +15,8 @@ wp = {
     redirects: [],
     categories: [],
     // find any '"Foo" redirects here.' alternate titles
-    getRedirects: function () {
-        $('.hatnote').each(function (index, el){
+    getRedirects: () => {
+        $('.hatnote').each((index, el) => {
             // @todo this assumes English
             let test = $(el).text().match('"(.*)" redirects here.');
 
@@ -26,8 +26,8 @@ wp = {
         })
     },
     // find the categories on the page
-    getCategories: function () {
-        $('#mw-normal-catlinks li').each(function (index, el){
+    getCategories: () => {
+        $('#mw-normal-catlinks li').each((index, el) => {
             // this == current DOM el, not wp
             wp.categories.push($(el).text())
         })
@@ -37,18 +37,16 @@ wp = {
 results = [],
 // on off-chance title contains unescaped HTML,
 // replace any angle brackets < > with HTML entities
-rmAngles = function (str) {
-    return str.replace('<', '&lt;').replace('>', '&gt;')
-},
+rmAngles = str => str.replace('<', '&lt;').replace('>', '&gt;'),
 // put constructed HTML into DOM
-addToDOM = function (html) {
+addToDOM = html => {
     // #mw-content-text is main body of article
     $('#mw-content-text').prepend(html)
     $('#loaddpla').hide('slow')
     $('#wikipedpla').show('slow')
 },
 // add HTML to page based on info in results object
-display = function () {
+display = () => {
     // @todo is there a better way to construct this HTML?
     let html = `<div id="wikipedpla" class="hatnote"><a href="http://dp.la">${chrome.i18n.getMessage('apiName')}</a> `,
         len = results.list.length;
@@ -63,35 +61,40 @@ display = function () {
     // link to full DPLA search using query attribute of results object
     html += ` (<a class="external" href="http://dp.la/search?q=${encodeURIComponent(results.query)}">${chrome.i18n.getMessage('seeSearch')}</a>):`
 
-    $.each(results.list, function (index, item) {
-        let last = (index + 1 === len);
+    $.each(results.list, (index, item) => {
+        let last = (index + 1 === len)
 
         // len !== 1 prevents "&" added to a list of 1
         if (last && len !== 1) {
-            html += ' & ';
+            html += ' & '
         }
 
-        html += ` <a href="${rmAngles(item.uri)}"`;
+        html += ` <a href="${rmAngles(item.uri)}"`
 
         if (item.isImage) {
-            html += ' class="dp-img"';
+            html += ' class="dp-img"'
         }
 
-        html += `>${rmAngles(item.title)}`;
+        html += `>${rmAngles(item.title)}`
 
         if (!last) {
-            html += '</a>,';
+            // no comma in a list of two items
+            if (len === 2) {
+                html += '</a>'
+            } else {
+                html += '</a>,'
+            }
         } else {
-            html += '</a>.';
+            html += '</a>.'
         }
     })
 
-    html += '</div>';
+    html += '</div>'
 
-    addToDOM(html);
+    addToDOM(html)
 },
 // add #loaddpla link & ask background.js for data
-init = function() {
+init = () => {
     // only execute on the Main (Articles) namespace
     // the first tab, text "Articles", has an id
     // of form "cs-nstab-$NAMESPACE"
