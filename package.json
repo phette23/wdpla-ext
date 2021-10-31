@@ -3,6 +3,7 @@
   "version": "1.2.2",
   "VERSION NOTE": "This version is irrelevant, only the one in app/manifest.json matters.",
   "devDependencies": {
+    "eslint": "^8.1.0",
     "grunt": "^1.3.0",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-compress": "^2.0.0",
@@ -10,13 +11,12 @@
     "grunt-contrib-cssmin": "^4.0.0",
     "grunt-contrib-jshint": "^3.0.0",
     "grunt-contrib-uglify": "^5.0.0",
-    "jshint": "^2.12.0",
     "load-grunt-tasks": "^5.1.0"
   },
   "private": true,
   "scripts": {
     "build": "grunt build",
-    "test": "jshint -c .jshintrc app/scripts/*.js"
+    "test": "eslint -c .eslintrc.json app/scripts/*.js"
   },
   "engines": {
     "node": ">=0.10.0"
