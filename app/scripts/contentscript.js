@@ -121,6 +121,7 @@ init = function() {
                 $('#loaddpla').on('click', display)
             } else if (response.options.loadstyle === 'title') {
                 $('#firstHeading').css('cursor', 'pointer')
+                // @TODO can't we combine these two lines?
                 $('#firstHeading').on('click', display)
             } else if (response.options.loadstyle === 'auto') {
                 display()

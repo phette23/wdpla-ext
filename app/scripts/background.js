@@ -13,7 +13,6 @@ let buildURI = function (query) {
 
     return base + '?api_key=' + key + '&q=' + encodeURIComponent(query)
 },
-options,
 // truncate string if too long & add …
 trunc = function (str, cutoff=60) {
     // lots of Hathi Trust titles end in ' /'
@@ -53,30 +52,26 @@ dplaMap = function (item) {
 subsetDpla = function (dpla) {
     return dpla.docs.map(dplaMap)
 },
-// send XHR to DPLA, pass results to callback
-// @TODO use fetch instead of XHR
+// get data from DPLA, pass results to callback
 getDplaResults = function (wp, cb) {
-    let url = buildURI(wp.query),
-        xhr = new XMLHttpRequest();
-
     // get options from storage, will send to content script
-    chrome.storage.sync.get({'numresults': 5, 'loadstyle': 'dablink'}, function (opts) {
-        options = opts
+    chrome.storage.sync.get({'numresults': 5, 'loadstyle': 'dablink'}, function (options) {
         // default to a limit of 5
-        url += '&page_size=' + (options.numresults ? options.numresults : 5)
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4) {
-                let data = JSON.parse(xhr.responseText),
-                    results = {
+        let url = buildURI(wp.query) + '&page_size=' + (options.numresults ? options.numresults : 5)
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                let resultsAndOptions = {
+                    options: options,
+                    results: {
                         query: wp.query,
-                        list: subsetDpla(JSON.parse(xhr.responseText))
-                    };
-
+                        list: subsetDpla(data)
+                    }
+                }
                 console.log('DPLA response:', data)
 
                 // if we didn't get anything, try a fallback
-                if (results.list.length === 0) {
+                if (resultsAndOptions.results.list.length === 0) {
                     // first look in redirects
                     if (wp.redirects.length !== 0) {
                         wp.query = wp.redirects.pop()
@@ -99,16 +94,13 @@ getDplaResults = function (wp, cb) {
                     return getDplaResults(wp, cb)
                 }
 
-                cb(results)
-            }
-        }
-
-        xhr.open('GET', url, true)
-        xhr.send()
+                cb(resultsAndOptions)
+            })
+            .catch(err => console.error(err))
     })
 };
 
-chrome.runtime.onMessage.addListener(function (request, sender) {
+chrome.runtime.onMessage.addListener((request, sender) => {
     // contentscript sends wp object with info about article
     let wp = request,
         id = sender.tab.id;
@@ -116,10 +108,9 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
     console.log('Message from a content script at', sender.tab.url)
     console.log('{wp}:', wp)
 
-    getDplaResults(wp, function (results) {
-        let data = { 'options': options, 'results': results }
+    getDplaResults(wp, resultsAndOptions => {
         // a callback 3rd param to addListener never seems to work
         // but using this manual callback method does
-        chrome.tabs.sendMessage(id, data)
-    });
-});
+        chrome.tabs.sendMessage(id, resultsAndOptions)
+    })
+})

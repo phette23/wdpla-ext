@@ -1,7 +1,7 @@
 {
     "name": "__MSG_appName__",
     "version": "1.2.3",
-    "manifest_version": 2,
+    "manifest_version": 3,
     "description": "__MSG_appDescription__",
     "icons": {
         "16": "images/dpla-logo-16.png",
@@ -13,14 +13,13 @@
     },
     "default_locale": "en",
     "background": {
-        "scripts": [
-            "scripts/background.js"
-        ],
-        "persistent": false
+        "service_worker": "scripts/background.js"
     },
     "options_page": "options.html",
+    "host_permissions": [
+        "http://api.dp.la/"
+    ],
     "permissions": [
-        "http://api.dp.la/",
         "storage"
     ],
     "content_scripts": [
@@ -39,9 +38,14 @@
             "all_frames": false
         }
     ],
-    "web_accessible_resources": [
-        "scripts/vendor/jquery-3.6.0.min.js",
-        "scripts/contentscript.js",
-        "styles/main.css"
-    ]
+    "web_accessible_resources": [{
+        "resources": [
+            "scripts/vendor/jquery-3.6.0.min.js",
+            "scripts/contentscript.js",
+            "styles/main.css"
+        ],
+        "matches": [
+            "https://*.wikipedia.org/*"
+        ]
+    }]
 }
