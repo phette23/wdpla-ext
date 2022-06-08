@@ -8,7 +8,7 @@
 
 // construct a query URI
 let buildURI = query => {
-    let base = 'http://api.dp.la/v2/items',
+    let base = 'https://api.dp.la/v2/items',
         key = 'e4c036f3302aad8d8c188683967b9619';
 
     return base + '?api_key=' + key + '&q=' + encodeURIComponent(query)

@@ -48,7 +48,7 @@ addToDOM = html => {
 // add HTML to page based on info in results object
 display = () => {
     // @todo is there a better way to construct this HTML?
-    let html = `<div id="wikipedpla" class="hatnote"><a href="http://dp.la">${chrome.i18n.getMessage('apiName')}</a> `,
+    let html = `<div id="wikipedpla" class="hatnote"><a href="https://dp.la">${chrome.i18n.getMessage('apiName')}</a> `,
         len = results.list.length;
 
     // handling plurals
@@ -59,7 +59,7 @@ display = () => {
     }
 
     // link to full DPLA search using query attribute of results object
-    html += ` (<a class="external" href="http://dp.la/search?q=${encodeURIComponent(results.query)}">${chrome.i18n.getMessage('seeSearch')}</a>):`
+    html += ` (<a class="external" href="https://dp.la/search?q=${encodeURIComponent(results.query)}">${chrome.i18n.getMessage('seeSearch')}</a>):`
 
     $.each(results.list, (index, item) => {
         let last = (index + 1 === len)

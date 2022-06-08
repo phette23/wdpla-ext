@@ -17,7 +17,7 @@
     },
     "options_page": "options.html",
     "host_permissions": [
-        "http://api.dp.la/"
+        "https://api.dp.la/"
     ],
     "permissions": [
         "storage"
