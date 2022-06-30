@@ -63,7 +63,7 @@ getDplaResults = (wp, cb) => {
                         list: subsetDpla(data)
                     }
                 }
-                console.log('DPLA response:', data)
+                console.log(`DPLA response for "${wp.query}":`, data)
 
                 // if we didn't get anything, try a fallback
                 if (resultsAndOptions.results.list.length === 0) {
@@ -74,14 +74,17 @@ getDplaResults = (wp, cb) => {
                     } else if (wp.categories.length !== 0) {
                         wp.query = wp.categories.pop()
                     } else {
-                        // tell user to report the page on GitHub
+                        // return a fake "result" to tell the user to report the page
                         return cb({
-                            query: wp.title,
-                            list: [{
-                                'title': chrome.i18n.getMessage('noResults'),
-                                'uri': 'https://chrome.google.com/webstore/detail/wikipedpla/jeblaajgenlcpcfhmgdhdeehjfbfhmml/reviews',
-                                'isImage': false
-                            }]
+                            options: options,
+                            results: {
+                                query: wp.title,
+                                list: [{
+                                    'title': chrome.i18n.getMessage('noResults'),
+                                    'uri': 'https://chrome.google.com/webstore/detail/wikipedpla/jeblaajgenlcpcfhmgdhdeehjfbfhmml/reviews',
+                                    'isImage': false
+                                }]
+                            }
                         })
                     }
 

@@ -111,7 +111,6 @@ init = () => {
         // send data to background script & wait for response
         chrome.runtime.sendMessage(wp)
         chrome.runtime.onMessage.addListener(response => {
-            console.log(response)
             results = response.results
 
             if (response.options.loadstyle === 'dablink') {
