@@ -3,16 +3,16 @@ let d = document
     , loadstyle = d.getElementById('loadstyle')
     , numresults = d.getElementById('numresults')
     // see https://developer.chrome.com/extensions/storage
-    , storage = chrome.storage.sync;
+    , storage = chrome.storage.sync
 
 // put message in notices area of DOM
 function msg (style, txt, time=2500) {
     let p = d.createElement('p'),
         // div for informational items
-        notices = d.getElementsByClassName('notices')[0];
+        notices = d.getElementsByClassName('notices')[0]
 
     p.textContent = txt
-    p.className = style += ' col-sm-offset-3'
+    p.className = style + ' col-sm-offset-3'
     notices.appendChild(p)
 
     // remove the notice in 2.5s
@@ -34,7 +34,7 @@ function validNum (num, mn, mx) {
     // input values are text by default, parse into integer
     let int = parseInt(num, 10),
         min = parseInt(mn, 10),
-        max = parseInt(mx, 10);
+        max = parseInt(mx, 10)
 
     // most likely case is too big so check that 1st
     if (int > max || int < min) return false
