@@ -5,3 +5,4 @@ dist
 app/styles/scss
 package
 webstore
+.eslintcache
